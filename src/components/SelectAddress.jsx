@@ -22,7 +22,7 @@ export default function SelectAddress() {
 
     useEffect(() => {
         const getProvincias = async () => {
-            const response = await fetch(`${url}/provincias`)
+            const response = await fetch(`${url}/provincias?orden=nombre`)
             const prov = await response.json();
             setProvincias(prov.provincias)
             console.log(prov.provincias[0].id)
@@ -34,7 +34,7 @@ export default function SelectAddress() {
         const getMunicipios = async () => {
             const response = await fetch(`${url}/municipios?provincia=${idProvincias}`)
             const muni = await response.json();
-            setProvincias(muni.municipios)
+            setMunicipios(muni.municipios)
         }
         if(idProvincias != ""){
             getMunicipios()
@@ -46,13 +46,12 @@ export default function SelectAddress() {
 
   return (
     <div>
-
+    {provincias.length >= 1 ? (
         <form method="" action="" onSubmit={stopSend} >
             <div>
                 <label htmlFor='Provincias'>Provincias</label>
             <select name="" id="" ref={selectProvincia} onChange={updateIdProvincias} >
-            {provincias.length > 0 &&
-                provincias.map((provincia) => {
+            {provincias.map((provincia) => {
                     return <option key={provincia.nombre} value={provincia.id}>{provincia.nombre}</option>
                 }) }
             </select>
@@ -70,6 +69,10 @@ export default function SelectAddress() {
             
                 <button>Registro</button>
         </form>
+    ) : (
+        <h1>Cargando</h1>
+    )}
+
     </div>
   )
 }
